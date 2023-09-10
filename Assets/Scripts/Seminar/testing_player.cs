@@ -8,10 +8,13 @@ public class player : MonoBehaviour
 
     private Transform tf;
 
-    [SerializeField] private float speed = 3f;
+    [SerializeField] private float speed = 2f;
+    [SerializeField] private float runspeed = 5f;
 
     private float moveH;
     private float moveV;
+    public AudioSource walking; 
+    public AudioSource running;
 
     // Start is called before the first frame update
     void Awake()
@@ -27,8 +30,29 @@ public class player : MonoBehaviour
         moveH = Input.GetAxis("Horizontal");
         moveV = Input.GetAxis("Vertical");
 
-        Vector3 movedir = new Vector3(-moveH ,0f, -moveV).normalized;
+        Vector3 movedir = new Vector3(-moveH, 0f, -moveV).normalized;
+        float currentSpeed = Input.GetKey(KeyCode.LeftShift) ? runspeed : speed;
 
-        transform.Translate(movedir * speed * Time.deltaTime);
+        tf.Translate(movedir * currentSpeed * Time.fixedDeltaTime);
+
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+        {
+            walking.enabled = true;
+
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                walking.enabled = false;
+                running.enabled = true;
+            }
+            else
+            {
+                running.enabled = false;
+            }
+        }
+        else
+        {
+            walking.enabled = false;
+            running.enabled = false;
+        }
     }
 }
