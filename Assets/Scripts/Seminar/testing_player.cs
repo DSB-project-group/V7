@@ -18,8 +18,10 @@ public class player : MonoBehaviour
     public AudioSource running;
 
     [SerializeField] private Camera cam;
-    [SerializeField] private float distance = 4f;
-    [SerializeField] private LayerMask mask;
+
+    //[SerializeField] private float distance = 4f;
+    //[SerializeField] private LayerMask mask;
+
 
     // Start is called before the first frame update
     void Awake()
@@ -31,27 +33,7 @@ public class player : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        Ray ray = new Ray(cam.transform.position, cam.transform.forward);
-        Debug.DrawRay(ray.origin, ray.direction * distance);
-        RaycastHit hitInfo;
-
-        if (Physics.Raycast(ray, out hitInfo, distance, mask))
-        {
-            if (hitInfo.collider.GetComponent<Interactable>() != null)
-            {
-                Interactable interactable = hitInfo.collider.GetComponent<Interactable>();
-                if (Input.GetButtonDown("Interact"))
-                {
-                    Debug.Log("press a buttom");
-                    interactable.BaseInteract();
-                }
-            }
-            else
-            {
-                Debug.Log("getcomponent error");
-            }
-        }
-
+            
 
         moveH = Input.GetAxis("Horizontal");
         moveV = Input.GetAxis("Vertical");
@@ -81,4 +63,5 @@ public class player : MonoBehaviour
             running.enabled = false;
         }
     }
+
 }

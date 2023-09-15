@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class press_to_play : Interactable
+public class press_to_play : MonoBehaviour
 {
 
-    public AudioSource music;
-    [SerializeField] private AudioClip ac;
-
+    [SerializeField] public AudioSource music;
     
     public GameObject tf1;
     public GameObject tf2;
+
+    //private bool isPress = false;
     // Start is called before the first frame update
     void Start()
     {
-       music.clip = ac;
+       music = GetComponent<AudioSource>();
 
     }
 
@@ -26,10 +26,14 @@ public class press_to_play : Interactable
         //music.PlayOneShot(ac);
     }
 
-    public void playMyAudio(AudioClip clipToPlay)
+    public void OnTriggerEnter(Collider other)
     {
-        music.clip = clipToPlay;
-        music.Play();
+        playMyAudio();
+    }
+
+    public void playMyAudio()
+    {
+        music.enabled = true;
         tf1.GetComponent<press_to_play>().stopMyAudio();
         tf2.GetComponent<press_to_play>().stopMyAudio();
         Debug.Log("play");
@@ -37,7 +41,7 @@ public class press_to_play : Interactable
 
     public void stopMyAudio()
     {
-        music.Stop();
+        music.enabled=false;
         Debug.Log($"stopped: {gameObject.name}");
     }
 }
